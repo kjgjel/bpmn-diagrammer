@@ -31,53 +31,53 @@
         }
         iframe {
             width: 100%;
-            height: 500px; /* Juster høyden etter behov */
+            height: 500px;
             border: none;
         }
         ul {
-            list-style-type: none; /* Fjerner punktmerking */
-            padding-left: 0; /* Fjerner innrykk */
+            list-style-type: none;
+            padding-left: 0;
         }
         a {
-            text-decoration: none; /* Fjerner understrekning */
-            color: gray; /* Setter farge på lenken til grå */
-            font-weight: bold; /* Gjør teksten fet */
-            display: flex; /* Får lenken til å oppføre seg som en blokk */
-            align-items: center; /* Vertikal justering av innholdet */
-            padding: 5px; /* Legger til litt padding */
-            border: 1px solid transparent; /* Legger til en usynlig kant */
-            border-radius: 4px; /* Runde kanter */
-            margin-bottom: 5px; /* Litt avstand mellom lenkene */
+            text-decoration: none;
+            color: gray;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            margin-bottom: 5px;
         }
         a:hover {
-            background-color: #f0f0f0; /* Endrer bakgrunn ved hover */
-            border-color: #007bff; /* Endrer kantfarge ved hover */
+            background-color: #f0f0f0;
+            border-color: #007bff;
         }
         .folder-icon {
-            margin-right: 8px; /* Avstand mellom ikon og tekst */
+            margin-right: 8px;
         }
         #feedback-form {
-            display: none; /* Skjuler skjemaet som standard */
-            position: fixed; /* Fikser posisjonen til skjemaet */
-            left: 50%; /* Sentrerer skjemaet horisontalt */
-            top: 50%; /* Sentrerer skjemaet vertikalt */
-            transform: translate(-50%, -50%); /* Justerer for å være midt i skjermen */
-            background-color: white; /* Bakgrunnsfarge */
-            border: 1px solid #ccc; /* Kantlinje */
-            border-radius: 8px; /* Runde kanter */
-            padding: 20px; /* Padding for innholdet */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Skyggeeffekt */
-            z-index: 1000; /* Sørger for at skjemaet er over andre elementer */
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
         }
         #overlay {
-            display: none; /* Skjuler overlay som standard */
-            position: fixed; /* Fikser posisjonen til overlayet */
+            display: none;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Halvtransparent svart bakgrunn */
-            z-index: 999; /* Sørger for at overlayet er over andre elementer */
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
         }
     </style>
 </head>
@@ -105,12 +105,11 @@
                 </ul>
             </li>
             <li><strong>PDF Filer</strong>
-    <ul>
-        <li>https://1drv.ms/b/c/36633548199ab6ed/IQQCKFyJpJ6TQJQvmG8sEpQoAXcsWSQ0dLENRUH83DjwtN0</li>
-        <li>https://1drv.ms/b/c/36633548199ab6ed/IQQCKFyJpJ6TQJQvmG8sEpQoAXcsWSQ0dLENRUH83DjwtN0</li>
-    </ul>
-</li>
-
+                <ul>
+                    <li><a href="https://1drv.ms/b/c/36633548199ab6ed/IQQCKFyJpJ6TQJQvmG8sEpQoAXcsWSQ0dLENRUH83DjwtN0" target="pdf-frame"><i class="fas fa-file-pdf folder-icon"></i>SOP Dokument 1</a></li>
+                    <li><a href="https://1drv.ms/b/c/36633548199ab6ed/IQQCKFyJpJ6TQJQvmG8sEpQoAXcsWSQ0dLENRUH83DjwtN0" target="pdf-frame"><i class="fas fa-file-pdf folder-icon"></i>SOP Dokument 2</a></li>
+                </ul>
+            </li>
             <li><strong>BPMN Dashbord</strong>
                 <ul>
                     <li><a href="Bpmn_dashbord/dashbord_1.html" target="_blank"><i class="fas fa-folder folder-icon"></i>Dashbord 1</a></li>
@@ -131,7 +130,6 @@
         <iframe name="pdf-frame" src=""></iframe>
     </div>
 
-    <!-- Overlay for the feedback form -->
     <div id="overlay" onclick="toggleFeedbackForm()"></div>
 
     <div id="feedback-form">
@@ -152,35 +150,32 @@
 
     <script>
         document.getElementById("myForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Forhindre standard innsending
+            event.preventDefault();
             
             const processNumber = document.getElementById("processNumber").value;
             const who = document.getElementById("who").value;
             const message = document.getElementById("message").value;
 
-            // Send e-post
             emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
                 processNumber: processNumber,
                 who: who,
                 message: message
             })
             .then(function(response) {
-                alert("Tilbakemelding sendt!"); // Bekreftelse til brukeren
+                alert("Tilbakemelding sendt!");
             }, function(error) {
                 alert("Det oppstod en feil: " + JSON.stringify(error));
             });
 
-            // Tøm skjemaet etter innsending
             document.getElementById("myForm").reset();
         });
 
-        // Funksjon for å vise eller skjule skjemaet
         function toggleFeedbackForm() {
             const form = document.getElementById("feedback-form");
             const overlay = document.getElementById("overlay");
             const isVisible = form.style.display === "block";
             form.style.display = isVisible ? "none" : "block";
-            overlay.style.display = isVisible ? "none" : "block"; // Vis/skjul overlay
+            overlay.style.display = isVisible ? "none" : "block";
         }
     </script>
 
