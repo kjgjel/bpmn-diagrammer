@@ -4,7 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>BPMN Diagrammer</title>
+<!-- Font Awesome for ikoner -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<!-- Google Fonts for et moderne utseende -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet" />
+
 <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script type="text/javascript">
   (function(){
@@ -12,145 +16,325 @@
   })();
 </script>
 <style>
+  /* Reset og grunnstil */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
   body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: #f4f4f9;
     display: flex;
-    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    color: #333;
   }
-  #file-structure {
-    width: 15%;
-    border-right: 1px solid #ccc;
-    padding: 10px;
-  }
-  #diagram {
-    width: 55%;
-    padding: 10px;
-  }
-  #pdf-viewer {
-    width: 30%;
-    padding: 10px;
-  }
-  iframe {
-    width: 100%;
-    height: 500px;
-    border: none;
-  }
-  ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
-  a {
-    text-decoration: none;
-    color: gray;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    margin-bottom: 5px;
-  }
-  a:hover {
-    background-color: #f0f0f0;
-    border-color: #007bff;
-  }
-  .folder-icon {
-    margin-right: 8px;
-  }
-  #feedback-form {
-    display: none;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-  }
-  #overlay {
-    display: none;
+
+  /* Header med miljøprofil og logo */
+  #header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    height: 80px;
+    background-color: #00796b;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  /* Miljøprofil tekst */
+  #environment-profile {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 20px;
+  }
+
+  /* Tittel/Logo øverst til venstre under header */
+  #title {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    flex-grow: 1;
+  }
+
+  /* Container for sidens innhold */
+  #container {
+    display: flex;
+    margin-top: 80px; /* tar høyde for header */
+    width: 100%;
+    flex: 1;
+  }
+
+  /* Side meny / filstruktur */
+  #file-structure {
+    width: 18%;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow-y: auto;
+  }
+
+  #file-structure h3 {
+    margin-bottom: 10px;
+    color: #00796b;
+    font-size: 16px;
+  }
+
+  #file-structure ul {
+    list-style: none;
+  }
+
+  #file-structure li {
+    margin-bottom: 8px;
+  }
+
+  #file-structure a {
+    text-decoration: none;
+    color: #555;
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  #file-structure a:hover {
+    background-color: #e0f2f1;
+    color: #00796b;
+  }
+
+  .folder-icon {
+    margin-right: 8px;
+  }
+
+  /* Hovedområdet for diagram og PDF */
+  #main-content {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  /* Diagram område */
+  #diagram {
+    flex: 2;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  #diagram h3 {
+    padding: 10px;
+    background-color: #00796b;
+    color: #fff;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  #diagram iframe {
+    flex: 1;
+    border: none;
+    width: 100%;
+  }
+
+  /* PDF visning område */
+  #pdf-viewer {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  #pdf-viewer h3 {
+    padding: 10px;
+    background-color: #00796b;
+    color: #fff;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  #pdf-viewer iframe {
+    flex: 1;
+    border: none;
+  }
+
+  /* Knapp for tilbakemelding */
+  button#feedback-btn {
+    margin-top: 10px;
+    background-color: #00796b;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+  }
+
+  button#feedback-btn:hover {
+    background-color: #004d40;
+  }
+
+  /* Feedback modal og overlay */
+  #overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 998;
+  }
+
+  #feedback-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     z-index: 999;
+  }
+
+  #feedback-form h3 {
+    margin-bottom: 15px;
+    color: #00796b;
+  }
+
+  #feedback-form label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+
+  #feedback-form input,
+  #feedback-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 14px;
+  }
+
+  #feedback-form textarea {
+    resize: vertical;
+  }
+
+  #feedback-form button {
+    margin-top: 15px;
+    background-color: #00796b;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+  }
+
+  #feedback-form button:hover {
+    background-color: #004d40;
   }
 </style>
 </head>
 <body>
 
-<div id="file-structure">
-  <h3>Filer</h3>
-  <ul>
-    <li><strong>E2E Prosesser</strong>
-      <ul>
-        <li><a href="E2E%20prosesser/E2E%20Vedlikehold.html" target="diagram-frame">E2E Vedlikehold</a></li>
-        <li><a href="E2E%20prosesser/E2E%20Drift.html" target="diagram-frame">E2E Drift</a></li>
-      </ul>
-    </li>
-    <li><strong>Vedlikehold</strong>
-      <ul>
-        <li><a href="Vedlikehold/OM200.001_opprette_notifikasjon.html" target="diagram-frame"><i class="fas fa-folder folder-icon"></i>OM200.001 - Opprette Notifikasjon</a></li>
-        <li><a href="Vedlikehold/OM200.002_oppdatere_vedlikeholdsplan.html" target="diagram-frame"><i class="fas fa-folder folder-icon"></i>OM200.002 - Oppdatere Vedlikeholdsplan</a></li>
-      </ul>
-    </li>
-    <li><strong>Drift</strong>
-      <ul>
-        <li><a href="drift/OM300.001_oppstart_hydroforanlegget.html" target="diagram-frame"><i class="fas fa-folder folder-icon"></i>OM300.001 - Oppstart Hydroforanlegget</a></li>
-        <li><a href="drift/OM300.002_stenge_hydroforanlegget.html" target="diagram-frame"><i class="fas fa-folder folder-icon"></i>OM300.002 - Stenge Hydroforanlegget</a></li>
-      </ul>
-    </li>
-    <li><strong>PDF Filer</strong>
-      <ul>
-        <!-- Her er ditt eksempel på PDF-lenke -->
-        <li>
-          <a href="https://1drv.ms/b/c/36633548199ab6ed/IQQCKFyJpJ6TQJQvmG8sEpQoAXcsWSQ0dLENRUH83DjwtN0" target="pdf-frame">
-            <i class="fas fa-file-pdf folder-icon"></i>SOP_Dokument_1
-          </a>
-        </li>
-        <!-- Legg til flere PDF-lenker her etter behov -->
-        <li>
-          <a href="https://1drv.ms/b/c/36633548199ab6ed/IQTbXcc3wTmKSLAk0AcfRC5sAXdWgVXq_HRTNRdgo5ffWIE" target="pdf-frame">
-            <i class="fas fa-file-pdf folder-icon"></i> bruksendring
-          </a>
-        </li>
-      </ul>
-    </li>
-    <li><strong>BPMN Dashbord</strong>
-      <ul>
-        <li><a href="Bpmn_dashbord/dashbord_1.html" target="_blank"><i class="fas fa-folder folder-icon"></i>Dashbord 1</a></li>
-        <li><a href="Bpmn_dashbord/dashbord_2.html" target="_blank"><i class="fas fa-folder folder-icon"></i>Dashbord 2</a></li>
-      </ul>
-    </li>
-  </ul>
-  <button onclick="toggleFeedbackForm()" style="background: none; border: none; color: gray; font-weight: bold; cursor: pointer;">Gi Tilbakemelding</button>
+<!-- Header med miljøprofil og tittel -->
+<div id="header">
+  <div id="environment-profile">Ikke lov å kopiere fra siden før en har skriftlig tillatelse fra E2esolutions</div>
+  <div id="title">BPMN Diagrammer</div>
 </div>
 
-<div id="diagram">
-  <h3>BPMN Diagram</h3>
-  <iframe name="diagram-frame" src="path/to/your/default_diagram.html"></iframe>
+<!-- Hovedinnhold -->
+<div id="container">
+  <!-- Side meny / filstruktur -->
+  <div id="file-structure">
+    <h3>Filer</h3>
+    <ul>
+      <li><strong>E2E Prosesser</strong>
+        <ul>
+          <li><a href="E2E%20prosesser/E2E%20Vedlikehold.html" target="diagram-frame">E2E Vedlikehold</a></li>
+          <li><a href="E2E%20prosesser/E2E%20Drift.html" target="diagram-frame">E2E Drift</a></li>
+        </ul>
+      </li>
+      <li><strong>Vedlikehold</strong>
+        <ul>
+          <li><a href="Vedlikehold/OM200.001_opprette_notifikasjon.html" target="diagram-frame"><i class="fas fa-folder folder-icon"></i>OM200.001 - Opprette Notifikasjon</a></li>
+          <li><a href="Vedlikehold/OM200.002_oppdatere_vedlikeholdsplan.html" target="diagram-frame"><i class="fas fa-folder folder-icon"></i>OM200.002 - Oppdatere Vedlikeholdsplan</a></li>
+        </ul>
+      </li>
+      <li><strong>Drift</strong>
+        <ul>
+          <li><a href="drift/OM300.001_oppstart_hydroforanlegget.html" target="diagram-frame"><i class="fas fa-folder folder-icon"></i>OM300.001 - Oppstart Hydroforanlegget</a></li>
+          <li><a href="drift/OM300.002_stenge_hydroforanlegget.html" target="diagram-frame"><i class="fas fa-folder folder-icon"></i>OM300.002 - Stenge Hydroforanlegget</a></li>
+        </ul>
+      </li>
+      <li><strong>PDF Filer</strong>
+        <ul>
+          <li>
+            <a href="https://1drv.ms/b/c/36633548199ab6ed/IQQCKFyJpJ6TQJQvmG8sEpQoAXcsWSQ0dLENRUH83DjwtN0" target="pdf-frame">
+              <i class="fas fa-file-pdf folder-icon"></i>SOP_Dokument_1
+            </a>
+          </li>
+          <li>
+            <a href="https://1drv.ms/b/c/36633548199ab6ed/IQTbXcc3wTmKSLAk0AcfRC5sAXdWgVXq_HRTNRdgo5ffWIE" target="pdf-frame">
+              <i class="fas fa-file-pdf folder-icon"></i> bruksendring
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li><strong>BPMN Dashboard</strong>
+        <ul>
+          <li><a href="Bpmn_dashbord/dashbord_1.html" target="_blank"><i class="fas fa-folder folder-icon"></i>Dashboard 1</a></li>
+          <li><a href="Bpmn_dashbord/dashbord_2.html" target="_blank"><i class="fas fa-folder folder-icon"></i>Dashboard 2</a></li>
+        </ul>
+      </li>
+    </ul>
+    <button id="feedback-btn" onclick="toggleFeedbackForm()">Gi Tilbakemelding</button>
+  </div>
+
+  <!-- Diagram -->
+  <div id="main-content">
+    <div id="diagram">
+      <h3>BPMN Diagram</h3>
+      <iframe name="diagram-frame" src="path/to/your/default_diagram.html"></iframe>
+    </div>
+    <!-- PDF -->
+    <div id="pdf-viewer">
+      <h3>PDF Visning</h3>
+      <iframe name="pdf-frame" src=""></iframe>
+    </div>
+  </div>
 </div>
 
-<div id="pdf-viewer">
-  <h3>PDF Visning</h3>
-  <iframe name="pdf-frame" src=""></iframe>
-</div>
-
+<!-- Feedback modal -->
 <div id="overlay" onclick="toggleFeedbackForm()"></div>
-
 <div id="feedback-form">
   <h3>Tilbakemelding</h3>
   <form id="myForm">
-    <label for="processNumber">Nummer på prosess:</label><br>
-    <input type="text" id="processNumber" name="processNumber" required><br><br>
-    <label for="who">Hvem:</label><br>
-    <input type="text" id="who" name="who" required><br><br>
-    <label for="message">Tilbakemelding (maks 200 ord):</label><br>
-    <textarea id="message" name="message" rows="4" maxlength="200" required></textarea><br><br>
+    <label for="processNumber">Nummer på prosess:</label>
+    <input type="text" id="processNumber" name="processNumber" required />
+    <label for="who">Hvem:</label>
+    <input type="text" id="who" name="who" required />
+    <label for="message">Tilbakemelding (maks 200 ord):</label>
+    <textarea id="message" name="message" rows="4" maxlength="200" required></textarea>
     <button type="submit">Send Tilbakemelding</button>
   </form>
 </div>
@@ -165,14 +349,14 @@
       processNumber: processNumber,
       who: who,
       message: message
-    })
-    .then(function(response) {
+    }).then(function(response) {
       alert("Tilbakemelding sendt!");
     }, function(error) {
       alert("Det oppstod en feil: " + JSON.stringify(error));
     });
     document.getElementById("myForm").reset();
   });
+
   function toggleFeedbackForm() {
     const form = document.getElementById("feedback-form");
     const overlay = document.getElementById("overlay");
@@ -181,3 +365,6 @@
     overlay.style.display = isVisible ? "none" : "block";
   }
 </script>
+
+</body>
+</html>
