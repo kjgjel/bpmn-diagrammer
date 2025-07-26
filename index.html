@@ -31,7 +31,7 @@
     color: #333;
   }
 
-  /* Header med miljøprofil og logo */
+  /* Header med miljøprofil og tittel */
   #header {
     position: fixed;
     top: 0;
@@ -44,6 +44,7 @@
     padding: 0 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     z-index: 1000;
+    flex-wrap: wrap;
   }
 
   /* Miljøprofil tekst */
@@ -52,6 +53,7 @@
     font-size: 14px;
     font-weight: 600;
     margin-right: 20px;
+    flex: 1 1 100%;
   }
 
   /* Tittel/Logo øverst til venstre under header */
@@ -59,7 +61,7 @@
     color: #fff;
     font-size: 20px;
     font-weight: bold;
-    flex-grow: 1;
+    flex: 1 1 100%;
   }
 
   /* Container for sidens innhold */
@@ -68,6 +70,7 @@
     margin-top: 80px; /* tar høyde for header */
     width: 100%;
     flex: 1;
+    flex-wrap: wrap;
   }
 
   /* Side meny / filstruktur */
@@ -79,6 +82,7 @@
     margin: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     overflow-y: auto;
+    min-height: calc(100vh - 100px);
   }
 
   #file-structure h3 {
@@ -120,6 +124,7 @@
     display: flex;
     gap: 10px;
     padding: 10px;
+    min-height: calc(100vh - 100px);
   }
 
   /* Diagram område */
@@ -170,7 +175,7 @@
   }
 
   /* Knapp for tilbakemelding */
-  button#feedback-btn {
+  #feedback-btn {
     margin-top: 10px;
     background-color: #00796b;
     color: #fff;
@@ -182,7 +187,7 @@
     transition: background-color 0.2s;
   }
 
-  button#feedback-btn:hover {
+  #feedback-btn:hover {
     background-color: #004d40;
   }
 
@@ -252,6 +257,54 @@
   #feedback-form button:hover {
     background-color: #004d40;
   }
+
+  /* Responsiv CSS for mindre skjermer */
+  @media (max-width: 768px) {
+    body {
+      flex-direction: column;
+    }
+
+    #header {
+      position: relative;
+      height: auto;
+      padding: 10px 20px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    #environment-profile {
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    #title {
+      font-size: 18px;
+    }
+
+    #container {
+      flex-direction: column;
+      margin-top: 0;
+    }
+
+    #file-structure {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    #main-content {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #diagram, #pdf-viewer {
+      width: 100%;
+    }
+
+    #feedback-btn {
+      width: 100%;
+      padding: 12px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -310,13 +363,12 @@
     <button id="feedback-btn" onclick="toggleFeedbackForm()">Gi Tilbakemelding</button>
   </div>
 
-  <!-- Diagram -->
+  <!-- Diagram og PDF visning -->
   <div id="main-content">
     <div id="diagram">
       <h3>BPMN Diagram</h3>
       <iframe name="diagram-frame" src="path/to/your/default_diagram.html"></iframe>
     </div>
-    <!-- PDF -->
     <div id="pdf-viewer">
       <h3>PDF Visning</h3>
       <iframe name="pdf-frame" src=""></iframe>
